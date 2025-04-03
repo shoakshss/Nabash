@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from thanosx.icu/apple/Login.php by HTTrack Website Copier/3.x [XR&CO'2017], Wed, 02 Apr 2025 23:14:40 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+        <link rel="stylesheet" href="../../cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+    
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url('img/bak.jpg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+        }
+        #customAlert {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .alertBox {
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .alertBox button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .yes {
+            background: green;
+        }
+
+        .no {
+            background: red;
+        }
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4); /* شفافية */
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+       #controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: red;
+    font-size: 16px;
+    border-radius: 5px;
+    position: fixed;
+    bottom: 20px; /* المسافة من الأسفل */
+    left: 50%;
+    transform: translateX(-50%); /* لتوسيط العنصر */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#controls.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+        .logo {
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 120px;
+            height: auto;
+        }
+        .input-field {
+            display: block;
+            width: 90%;
+            max-width: 300px;
+            padding: 10px;
+            margin: 10px auto 20px;
+            font-size: 16px;
+            text-align: center;
+            color: white;
+            background: transparent;
+            border: 2px solid white;
+            border-radius: 10px;
+            outline: none;
+        }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        button, a {
+            display: block;
+            width: 90%;
+            max-width: 300px;
+            padding: 15px;
+            margin: 10px auto;
+            font-size: 16px;
+            text-decoration: none;
+            text-align: center;
+            color: white;
+            background: transparent;
+            border: 2px solid white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover, a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .loading {
+            margin: 20px auto;
+            font-size: 18px;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="customAlert">
+        <div class="alertBox">
+            <p>هل ترغب بتحميل التطبيق؟</p>
+            <button class="yes" id="yesBtn">نعم</button>
+            <button class="no" id="noBtn">لا</button>
+        </div>
+    </div>
+          <div id="controls">
+        <div class="loading">  </div>
+         
+    </div>
+        <div class="logo">
+               
+            <img src="img/logo.png" alt="Logo">
+        </div>
+        <div class="from">
+        <input type="text" class="input-field" id="id" placeholder="ID" >
+        <input type="text" class="input-field" id="activationCode" placeholder="Key" >
+         
+        <button onclick="logen()">تسجيل دخول</button>
+    
+        <a href="../../external.html?link=https://t.me/iCe_gamee" target="_blank">TELEGRAM CHANNEL</a>
+    </div>
+   
+    <script>
+    
+    document.getElementById("yesBtn").addEventListener("click", function() {
+            //document.getElementById("customAlert").style.display = "none";
+            open('download/index.html');
+        });
+
+        document.getElementById("noBtn").addEventListener("click", function() {
+            document.getElementById("customAlert").style.display = "none";
+        });
+    
+    const inputField = document.getElementById('id');
+
+    inputField.addEventListener('input', function () {
+        this.value = this.value.replace(/[^0-9]/g, '');
+    });
+    function showToast(message) {
+    const toast = document.getElementById('controls');
+    toast.textContent = message;
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 6000); 
+}
+
+        
+       function logen(){
+              var codex = document.getElementById('activationCode')
+              var id = document.getElementById('id')
+            fetch('otp.json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id: id.value,  otp: codex.value})
+            })
+            .then(response => response.text())
+            .then(responseText => {
+                  data = JSON.parse(responseText);
+                 if(!data.success){
+                     if(data.message == 'app'){
+                         document.getElementById("customAlert").style.display = "flex";
+                     }else{
+                     showToast(data.message)
+                     }
+                 }else{
+
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = atob(data.url);
+
+                   const input1 = document.createElement('input');
+                   input1.type = 'hidden';
+                   input1.name = 'id';
+                   input1.value = atob(data.id); 
+                   form.appendChild(input1);
+
+                   const input2 = document.createElement('input');
+                   input2.type = 'hidden';
+                   input2.name = 'key';
+                   input2.value = atob(data.key); 
+                   form.appendChild(input2);
+
+                   document.body.appendChild(form);
+                   form.submit();
+
+                    
+                 }
+                  
+                  
+                  
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+       
+       }
+        
+    </script>
+    
+    
+</body>
+
+<!-- Mirrored from thanosx.icu/apple/Login.php by HTTrack Website Copier/3.x [XR&CO'2017], Wed, 02 Apr 2025 23:14:44 GMT -->
+</html>
